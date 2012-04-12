@@ -1,0 +1,43 @@
+#include<stdio.h> // Needed to deal with file I/O
+#include<stdlib.h>
+#include<string.h> //Needed for strncmp, used in parsing
+#include<unistd.h> //Necessary for the delay function below
+
+int main() 
+
+{
+  //Quick counting test
+  int count;
+  for ( count = 0; count < 20; count++){
+      printf("%d\n",count);
+  }
+
+  //Below file I/O is established with pointer to GPS device
+  //If error occurs, programs fails; else, it reads and writes all
+  //NMEA sentences beginning with the desired "GPGLL" header
+  FILE *fp;
+  fp = fopen("/dev/ttyO1","r");
+  if (fp == NULL) {
+    perror("Failed to read from pin");
+    return EXIT_FAILURE;
+  }
+
+
+  //Below, it's important to note that empty (useless) GPS entries
+  //will always have a length of 27 characters, while useful ones have
+  //a length of 50 characters, enabling us to use the strlen function
+  //to screen for entries of some worth  
+  int j = 0;  
+  char *buff = (char *)(malloc(1000*sizeof(char)));
+  while(30){
+    fscanf(fp,"%s",buff);
+    if (strncmp(buff, "$GPGLL",6) == 0){
+      printf("%s",buff);
+      j++;
+      usleep(50000);
+    }
+  }
+  
+  fclose(fp);
+  return EXIT_SUCCESS;
+}
