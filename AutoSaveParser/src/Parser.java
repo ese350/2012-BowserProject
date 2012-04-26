@@ -22,9 +22,10 @@ public class Parser {
 		double converter1, converter2, temp1, temp2;
 		int converter3;
 		
-		final double speedFactor = 0.006544931;	//The multiplier for converting the hex speed readout to mph. Currently result of linear fit
+		final double speedFactor = 0.006544931;	//The multiplier for converting the hex speed readout to mph. Currently result of linear fit.
 		
 		int code = 0;
+		int tempVelocity = 0;
 		double velocity = 0;
 		int wheelAngle = 0;
 		int brakePedal = 0;
@@ -115,7 +116,7 @@ public class Parser {
 					 * transformed to fall within the range -100 to 100. 
 					 */
 					
-					System.out.print("Transformed steering wheel input from " + chunks[5] + " " + chunks[6] + " to ");
+					//System.out.print("Transformed steering wheel input from " + chunks[5] + " " + chunks[6] + " to ");
 					chunks[5] = chunks[5].substring(2);
 					chunks[6] = chunks[6].substring(2);
 					if(chunks[5].contains("e") || chunks[5].contains("E")
@@ -149,7 +150,6 @@ public class Parser {
 					else if(chunks[11].equals("90")) hazardLights = 4;
 					hazcnt++;
 					data.add(Integer.toString(hazardLights));
-					break;
 				case 1421:	//Turn signals and lights
 					chunks[6] = chunks[6].substring(2);
 					chunks[7] = chunks[7].substring(2);
@@ -189,11 +189,14 @@ public class Parser {
 					data.add(Integer.toString(lights));
 					break;
 				case 1477:	//Velocity
+					//System.out.print("Converted " + chunks[6] + " " + chunks[7] + " to ");
 					chunks[6] = chunks[6].substring(2);
 					chunks[7] = chunks[7].substring(2);
 					chunks[6] = chunks[6] + chunks[7];
-					velocity = Double.parseDouble(chunks[6])*speedFactor;
+					tempVelocity = Integer.valueOf(chunks[6],16);
+					velocity = (double) tempVelocity*speedFactor;
 					velcnt++;
+					//System.out.println(velocity + " mph");
 					data.add(Double.toString(velocity));
 					break;
 				}
