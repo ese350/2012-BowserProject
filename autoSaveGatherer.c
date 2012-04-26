@@ -27,11 +27,11 @@
     while(1){
       sprintf(fileName,"/home/ubuntu/BowserProject/test1/datadump%d.txt",n);
       write = fopen(fileName,"a");
-      while(strncmp(buff,"$GPGLL",6)){
+      while(strncmp(buff,"$GPRMC",6)){
         fscanf(readGPS,"%s",buff);
       }
       while(j<60){
-        if(!(strncmp(buff,"$GPGLL",6))){
+        if(!(strncmp(buff,"$GPRMC",6))){
 	  fprintf(write,"%s\n",buff);
 	  fflush(write);
           hazflg = 0;

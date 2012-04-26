@@ -12,7 +12,7 @@
 //in the event of a crash.
 
 void writeLoop(char *buff){
-  FILE *fp = fopen("/home/ubuntu/tests/datadump.txt","a");
+  FILE *fp = fopen("/home/ubuntu/BowserProject/tests/datadump.txt","a");
   if(fp == NULL) perror("Failed to find write file");
   fprintf(fp,"%s\n",buff);
   fclose(fp);
@@ -35,7 +35,7 @@ int main(){
   //Below, it's important to note that empty (useless) GPS entries
   //will always have a length of 27 characters, while useful ones have
   //a length of 50 characters, enabling us to use the strlen function
-  //to screen for entries of some worth.
+  //to screen for entries of worth.
     
   char *buff = (char *)(malloc(1000*sizeof(char)));
 
