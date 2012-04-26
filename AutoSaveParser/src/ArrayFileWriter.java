@@ -10,7 +10,8 @@ public class ArrayFileWriter {
 	public static void writeArrayFile(String newFileName, String readFileName){
 		if (newFileName == null || readFileName == null) throw new IllegalArgumentException("Null argument");
 		try {
-			FileWriter out = new FileWriter(new File(newFileName));
+			File file = new File(newFileName);
+			FileWriter out = new FileWriter(file);
 			Parser p = new Parser(readFileName);
 			String[] data = p.getData();
 			String arrayName = newFileName.replaceAll(".js", "");
@@ -20,6 +21,7 @@ public class ArrayFileWriter {
 				out.write(arrayName + "[" + i + "] = " + data[i] + ";" + newLineSequence);
 			}
 			out.close();
+			file.setReadable(true);
 		} catch (IOException e){
 			throw new RuntimeException("Cannot write file: " + newFileName);
 		}
